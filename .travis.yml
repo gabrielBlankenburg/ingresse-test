@@ -10,6 +10,7 @@ services:
   - docker-compose
 
 before_install:
+  - docker-compose migrate-to-labels
   - sudo chmod 777 config.sh
   - sudo ./config.sh
 
