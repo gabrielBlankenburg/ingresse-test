@@ -6,8 +6,7 @@ php:
 before_script:
   - cd src
   - composer install --no-interaction
-  - php artisan migrate
-  - yes
+  - echo -e "yes" | php artisan migrate
 
 script:
   - vendor/bin/phpunit
