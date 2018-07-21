@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - 7.2
+
+before_script:
+  - compose install --no-interaction
+  - php artisan migrate
+
+script:
+  - src/vendor/bin/phpunit
