@@ -1,0 +1,13 @@
+/src/node_modules
+/src/public/hot
+/src/public/storage
+/src/storage/*.key
+/src/vendor
+/src/.idea
+/src/.vscode
+/src/.vagrant
+/srcHomestead.json
+/srcHomestead.yaml
+/srcnpm-debug.log
+/srcyarn-error.log
+/src.env
