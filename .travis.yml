@@ -6,8 +6,9 @@ php:
   - 7.2
 
 before_script:
-  - compose install --no-interaction
+  - cd src
+  - composer install --no-interaction
   - php artisan migrate
 
 script:
-  - src/vendor/bin/phpunit
+  - vendor/bin/phpunit
