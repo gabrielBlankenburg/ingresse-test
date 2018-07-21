@@ -1,14 +1,12 @@
 language: php
 
 php:
-  - 7.0
-  - 7.1
   - 7.2
 
 before_script:
   - cd src
   - composer install --no-interaction
-  - php artisan migrate
+  - php artisan migrate -q
 
 script:
   - vendor/bin/phpunit
