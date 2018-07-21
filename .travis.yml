@@ -20,5 +20,4 @@ before_install:
   - sudo ./config.sh
 
 script:
-  - cd src
-  - vendor/bin/phpunit
+  - docker exec -it ingresse-php-fpm vendor/bin/phpunit
