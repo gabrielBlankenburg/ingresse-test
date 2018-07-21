@@ -34,6 +34,6 @@ class UserApiTest extends TestCase
      //    $response
      //        ->assertStatus(201);
 
-    	$this->assertTrue(false);
+    	$this->assertTrue(0);
     }
 }
