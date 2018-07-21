@@ -7,11 +7,8 @@ php:
 
 services:
   - docker
-  - docker-compose
 
 before_install:
-  - sudo curl -L https://github.com/docker/compose/releases/download/3.6/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-  - sudo chmod +x /usr/local/bin/docker-compose
   - sudo chmod 777 config.sh
   - sudo ./config.sh
 
