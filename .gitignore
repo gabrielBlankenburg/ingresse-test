@@ -6,8 +6,7 @@
 /src/.idea
 /src/.vscode
 /src/.vagrant
-/srcHomestead.json
-/srcHomestead.yaml
-/srcnpm-debug.log
-/srcyarn-error.log
-/src.env
+/src/Homestead.json
+/src/Homestead.yaml
+/src/npm-debug.log
+/src/yarn-error.log
