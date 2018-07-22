@@ -14,22 +14,24 @@ class UsersController extends Controller
     /**
      * Lista todos os usuários cadastrados
      *
+     * @param  \App\Http\Repositories\UserRepository $repository
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(UserRepository $repository)
     {
-        return response(UserRepository::getAll(), 200);
+        return response($repository->getAll(), 200);
     }
 
     /**
      * Salva um novo usuário
      *
      * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\Http\Repositories\UserRepository $repository
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request, UserRepository $repository)
     {
-        $user = UserRepository::save($request);
+        $user = $repository->save($request);
         if ($user) {
             return response($user, 201);
         } else {
@@ -40,12 +42,13 @@ class UsersController extends Controller
     /**
      * Mostra o usuário com o id fornecido
      *
+     * @param  \App\Http\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(UserRepository $repository, $id)
     {
-        $user = UserRepository::get($id);
+        $user = $repository->get($id);
         return response($user, 200);
     }
 
@@ -53,12 +56,13 @@ class UsersController extends Controller
      * Atualiza os dados de um usuário
      *
      * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\Http\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, UserRepository $repository, $id)
     {
-        $user = UserRepository::save($request, $id);
+        $user = $repository->save($request, $id);
 
         if ($user) {
             return response($user, 201);
@@ -70,16 +74,16 @@ class UsersController extends Controller
     /**
      * Deleta um usuário
      *
+     * @param  \App\Http\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(UserRepository $repository, $id)
     {
-        if (UserRepository::delete($id)) {
+        if ($repository->delete($id)) {
             return response([], 204);            
         } else {
             return response(['error' => 'Can\'t remove user'], 400);
         }
-
     }
 }

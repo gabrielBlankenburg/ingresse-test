@@ -17,7 +17,7 @@ class UserRepository {
 	 *
 	 * @return instância de \App\User em caso de sucesso e false em caso de erro
 	*/
-	public static function save(UserRequest $request, $id = null) {
+	public function save(UserRequest $request, $id = null) {
 
 		$user;
 
@@ -47,10 +47,10 @@ class UserRepository {
 
         if ($user->save()) {
 
-        	Cache::forget('users');
+        	$this->clearUsersCache();
 
         	if ($id !== null) {
-        		Cache::forget('user_'.$id);
+        		$this->clearUserCache($id);
         	}
 
             return $user;
@@ -64,9 +64,8 @@ class UserRepository {
 	 *
 	 * @return Instância de \App\User
 	*/
-	public static function getAll()
+	public function getAll()
 	{
-
 		$expiration = 60 * 24;
 		$key = 'users';
 
@@ -81,7 +80,7 @@ class UserRepository {
 	 * @param int id
 	 * @return instância de \App\User
 	*/
-	public static function get($id)
+	public function get($id)
 	{
 		$expiration = 60 * 24;
 		$key = 'user_'.$id;
@@ -97,16 +96,36 @@ class UserRepository {
 	 * @param int id
 	 * @return true caso o usuário seja removido ou false em caso de erro
 	*/
-	public static function delete($id)
+	public function delete($id)
 	{
 		$user = User::findOrFail($id);
 
         if ($user->delete()) {
-	        Cache::forget('user_'.$id);
+        	$this->clearUserCache($id);
+        	$this->clearUsersCache();
 	        return true;
         } else {
         	return false;
         }
+	}
 
+	/**
+	 * Limpa o cache de um usuário
+	 *
+	 * @param int $id
+	*/
+	protected function clearUserCache($id)
+	{
+		Cache::forget('user_'.$id);
+	}
+
+	/**
+	 * Limpa o cache de todos os usuários
+	 *
+	 * @param int $id
+	*/
+	protected function clearUsersCache()
+	{
+		Cache::forget('users');
 	}
 }
