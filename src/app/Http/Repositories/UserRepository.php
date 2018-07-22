@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
 class UserRepository {
 
@@ -45,9 +46,67 @@ class UserRepository {
         }
 
         if ($user->save()) {
+
+        	Cache::forget('users');
+
+        	if ($id !== null) {
+        		Cache::forget('user_'.$id);
+        	}
+
             return $user;
         } else {
             return false;
         }
+	}
+
+	/**
+	 * Retorna a lista de todos os usuários salvo no cache, se não houver registro no cache uma consulta é feita no banco, e então os registros são saçvos no cache por 24 horas
+	 *
+	 * @return Instância de \App\User
+	*/
+	public static function getAll()
+	{
+
+		$expiration = 60 * 24;
+		$key = 'users';
+
+		return Cache::remember($key, $expiration, function() {
+			return User::all();
+		});
+	}
+
+	/**
+	 * Mostra os detalhes de um usuário salvo no cache, se não houver a informação do usuário em questão salva no cache uma consulta é feita no banco, salvando no cache a informação dessa consulta e a retornando
+	 *
+	 * @param int id
+	 * @return instância de \App\User
+	*/
+	public static function get($id)
+	{
+		$expiration = 60 * 24;
+		$key = 'user_'.$id;
+
+		return Cache::remember($key, $expiration, function() use ($id){
+			return User::findOrFail($id);
+		});
+	}
+
+	/**
+	 * Deleta um usuário e remove o mesmo do cache
+	 *
+	 * @param int id
+	 * @return true caso o usuário seja removido ou false em caso de erro
+	*/
+	public static function delete($id)
+	{
+		$user = User::findOrFail($id);
+
+        if ($user->delete()) {
+	        Cache::forget('user_'.$id);
+	        return true;
+        } else {
+        	return false;
+        }
+
 	}
 }

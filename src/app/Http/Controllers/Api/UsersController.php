@@ -18,9 +18,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        return response($users, 200);
+        return response(UserRepository::getAll(), 200);
     }
 
     /**
@@ -47,8 +45,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-
+        $user = UserRepository::get($id);
         return response($user, 200);
     }
 
@@ -78,10 +75,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        if (UserRepository::delete($id)) {
+            return response([], 204);            
+        } else {
+            return response(['error' => 'Can\'t remove user'], 400);
+        }
 
-        $delete = $user->delete();
-
-        return response([], 204);
     }
 }
