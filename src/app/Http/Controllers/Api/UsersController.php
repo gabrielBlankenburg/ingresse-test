@@ -71,7 +71,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Desativa um usuário
+     * Deleta um usuário
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
