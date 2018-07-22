@@ -26,6 +26,7 @@ class UserRequest extends FormRequest
         return [
             'id' => 'numeric|nullable',
             'name' => 'string|required',
+            'last_name' => 'string|required',
             'cpf' => 'numeric|required',
             'rg' => 'numeric|nullable',
             'email' => 'email|required',

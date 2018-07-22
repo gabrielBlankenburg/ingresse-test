@@ -25,7 +25,8 @@ class UserApiTest extends TestCase
     {
 
     	$user = [
-    		'name' => 'José',
+    		'name' => 'Gabriel',
+            'last_name' => 'Blankenburg',
     		'rg' => '1312312',
     		'cpf' => '1312312',
     		'email' => 'jose@email.com',
@@ -72,6 +73,7 @@ class UserApiTest extends TestCase
 
     	$userUpdated = [
     		'name' => 'Gabriel',
+            'last_name' => 'Gonçalves Blankenburg',
     		'rg' => '1312312',
     		'cpf' => '1312312',
     		'email' => 'jose@email.com',

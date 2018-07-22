@@ -4,10 +4,15 @@ namespace App\Http\Repositories;
 
 use App\User;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 
 class UserRepository {
+
+	protected $expiration = 60 * 24;
+	protected $userKey = 'user_';
+	protected $usersKey = 'users';
 
 	/**
 	 * Cria um novo usuário ou edita um existente
@@ -36,6 +41,7 @@ class UserRepository {
 
 
         $user->name = $request->input('name');
+        $user->last_name = $request->input('last_name');
         $user->rg = $request->input('rg');
         $user->cpf = $request->input('cpf');
         $user->email = $request->input('email');
@@ -53,7 +59,7 @@ class UserRepository {
         		$this->clearUserCache($id);
         	}
 
-            return $user;
+            return new UserResource($user);
         } else {
             return false;
         }
@@ -66,11 +72,8 @@ class UserRepository {
 	*/
 	public function getAll()
 	{
-		$expiration = 60 * 24;
-		$key = 'users';
-
-		return Cache::remember($key, $expiration, function() {
-			return User::all();
+		return Cache::remember($this->usersKey, $this->expiration, function() {
+			return UserResource::collection(User::all());
 		});
 	}
 
@@ -82,11 +85,10 @@ class UserRepository {
 	*/
 	public function get($id)
 	{
-		$expiration = 60 * 24;
-		$key = 'user_'.$id;
+		$key = $this->userKey.$id;
 
-		return Cache::remember($key, $expiration, function() use ($id){
-			return User::findOrFail($id);
+		return Cache::remember($key, $this->expiration, function() use ($id){
+			return new UserResource(User::findOrFail($id));
 		});
 	}
 
