@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\ValidCpf;
 
 class UserRequest extends FormRequest
 {
@@ -23,16 +24,20 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'id' => 'numeric|nullable',
+        $rules = [
             'name' => 'string|required',
             'last_name' => 'string|required',
-            'cpf' => 'numeric|required',
-            'rg' => 'numeric|nullable',
+            'cpf' => new ValidCpf,
+            'rg' => 'string|max:14|nullable',
             'email' => 'email|required',
             'birth_date' => 'date|required',
-            'password' => 'string|min:6|nullable',
         ];
+
+        if ($this->method() != 'PUT') {
+            $rules['email'] .= '|unique:users';
+        }
+
+        return $rules;
     }
 
 

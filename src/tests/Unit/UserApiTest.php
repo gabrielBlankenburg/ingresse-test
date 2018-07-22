@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Helpers\CpfValidation;
 
 class UserApiTest extends TestCase
 {
@@ -28,8 +29,8 @@ class UserApiTest extends TestCase
     		'name' => 'Gabriel',
             'last_name' => 'Blankenburg',
     		'rg' => '1312312',
-    		'cpf' => '1312312',
-    		'email' => 'jose@email.com',
+    		'cpf' => CpfValidation::generate(),
+    		'email' => 'gabriel@teste.com',
     		'birth_date' => '1998-10-10',
     		'password' => '123456',
     	];
@@ -72,14 +73,14 @@ class UserApiTest extends TestCase
     {
 
     	$userUpdated = [
-    		'name' => 'Gabriel',
+            'name' => 'Gabriel',
             'last_name' => 'Gonçalves Blankenburg',
-    		'rg' => '1312312',
-    		'cpf' => '1312312',
-    		'email' => 'jose@email.com',
-    		'birth_date' => '1998-10-10',
-    		'password' => '123456',
-    	];
+            'rg' => '1312312',
+            'cpf' => CpfValidation::generate(),
+            'email' => 'gabriel@teste.com',
+            'birth_date' => '1998-10-10',
+            'password' => '123456',
+        ];
 
     	$user = \App\User::first();
 
