@@ -11,7 +11,7 @@ services:
     container_name: ingresse-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: ingresse
 
   webserver:
