@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Repositories;
 
 use App\User;
 use App\Http\Requests\UserRequest;
@@ -30,7 +30,7 @@ class UserRepository {
 			$user = new User();
 
 			// Se for um novo usuário, é necessário informar a senha
-			$request->validate(['password' => 'required']);
+			$request->validate(['password' => 'string|min:6|required']);
 			
 			if (!$request->validated()) {
 				return false;

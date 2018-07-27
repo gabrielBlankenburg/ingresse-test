@@ -7,14 +7,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Http\Requests\UserRequest;
-use App\Http\Repositories\UserRepository;
+use App\Repositories\UserRepository;
 
 class UsersController extends Controller
 {
     /**
      * Lista todos os usuários cadastrados
      *
-     * @param  \App\Http\Repositories\UserRepository $repository
+     * @param  \App\UserRepository $repository
      * @return \Illuminate\Http\Response
      */
     public function index(UserRepository $repository)
@@ -26,7 +26,7 @@ class UsersController extends Controller
      * Salva um novo usuário
      *
      * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\Http\Repositories\UserRepository $repository
+     * @param  \App\Repositories\UserRepository $repository
      * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request, UserRepository $repository)
@@ -42,7 +42,7 @@ class UsersController extends Controller
     /**
      * Mostra o usuário com o id fornecido
      *
-     * @param  \App\Http\Repositories\UserRepository $repository
+     * @param  \App\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -56,7 +56,7 @@ class UsersController extends Controller
      * Atualiza os dados de um usuário
      *
      * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\Http\Repositories\UserRepository $repository
+     * @param  \App\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -74,7 +74,7 @@ class UsersController extends Controller
     /**
      * Deleta um usuário
      *
-     * @param  \App\Http\Repositories\UserRepository $repository
+     * @param  \App\Repositories\UserRepository $repository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
