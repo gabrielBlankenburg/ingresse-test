@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Lista todos os usuários cadastrados
      *

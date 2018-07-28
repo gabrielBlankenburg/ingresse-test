@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /usr/src/application/app/Exceptions</title>
+  <title>Dashboard for /usr/src/application/app/Repositories</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../.css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../.css/nv.d3.min.css" rel="stylesheet" type="text/css">
@@ -20,7 +20,7 @@
      <div class="col-md-12">
       <ol class="breadcrumb">
         <li><a href="../index.html">/usr/src/application/app</a></li>
-        <li><a href="index.html">Exceptions</a></li>
+        <li><a href="index.html">Repositories</a></li>
         <li class="active">(Dashboard)</li>
 
       </ol>
@@ -159,7 +159,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,1], "Class Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,1,0], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -177,7 +177,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,2], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,1,1,4], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -227,7 +227,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,2,"<a href=\"Handler.php.html#8\">App\\Exceptions\\Handler<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[94.28571428571428,12,"<a href=\"UserRepository.php.html#11\">App\\Repositories\\UserRepository<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -251,7 +251,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"Handler.php.html#35\">App\\Exceptions\\Handler::report<\/a>"],[100,1,"<a href=\"Handler.php.html#47\">App\\Exceptions\\Handler::render<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[95,6,"<a href=\"UserRepository.php.html#25\">App\\Repositories\\UserRepository::save<\/a>"],[100,1,"<a href=\"UserRepository.php.html#73\">App\\Repositories\\UserRepository::getAll<\/a>"],[100,1,"<a href=\"UserRepository.php.html#86\">App\\Repositories\\UserRepository::get<\/a>"],[83.33333333333334,2,"<a href=\"UserRepository.php.html#101\">App\\Repositories\\UserRepository::delete<\/a>"],[100,1,"<a href=\"UserRepository.php.html#119\">App\\Repositories\\UserRepository::clearUserCache<\/a>"],[100,1,"<a href=\"UserRepository.php.html#129\">App\\Repositories\\UserRepository::clearUsersCache<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
