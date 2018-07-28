@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     /**
@@ -79,7 +79,7 @@ class AuthController extends Controller
             return response([
                 'message' => 'User created successfully',
                 'accessToken' => $token,
-            ], 200);
+            ], 201);
         } else {
             return response(['error' => 'Can\'t add user'], 400);
         }

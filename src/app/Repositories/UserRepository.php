@@ -73,6 +73,12 @@ class UserRepository {
 	*/
 	public function generateAdmin()
 	{
+		$admin = User::where('email', 'gabriel@admin.com');
+
+		if ($admin->first()) {
+			return false;
+		}
+
 		$user = new User();
 
         $user->name = 'User';
