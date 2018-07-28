@@ -11,12 +11,22 @@ use App\Repositories\UserRepository;
 
 class AuthController extends Controller
 {
-
+    /**
+     * Utiliza o middleware de guest
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
+    /**
+     * Faz o login e recebe o token
+     *
+     * @param  \App\Http\Requests\LoginRequest  $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(LoginRequest $request)
     {
         $attempt = Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]);
@@ -35,6 +45,30 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Gera um admin generico para que possa ser iniciado o sistema com algum admin
+     *
+     * @param  \App\Repositories\UserRepository $repository
+     * @return \Illuminate\Http\Response
+     */
+    public function generateAdmin(UserRepository $repository)
+    {
+        $user = $repository->generateAdmin();
+
+        if ($user) {
+            return response(['message' => 'Default admin generated'], 200);
+        } else {
+            return response(['error' => 'Can\'t add admin'], 400);
+        }
+    }
+
+    /**
+     * Cria um novo usuário e retorna o token
+     *
+     * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\Repositories\UserRepository $repository
+     * @return \Illuminate\Http\Response
+     */
     public function register(UserRequest $request, UserRepository $repository)
     {
         $user = $repository->save($request);

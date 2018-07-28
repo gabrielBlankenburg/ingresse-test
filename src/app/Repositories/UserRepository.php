@@ -7,6 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+use App\Helpers\CpfValidation;
 
 class UserRepository {
 
@@ -62,6 +63,31 @@ class UserRepository {
             return new UserResource($user);
         } else {
             return false;
+        }
+	}
+
+	/**
+	 * Cria um admin
+	 *
+	 * @return instância de \App\User em caso de sucesso e false em caso de erro
+	*/
+	public function generateAdmin()
+	{
+		$user = new User();
+
+        $user->name = 'User';
+        $user->last_name = 'Admin';
+        $user->admin = 1;
+        $user->rg = '13131232';
+        $user->cpf = CpfValidation::generate();
+        $user->email = 'gabriel@admin.com';
+        $user->birth_date = '1998-04-17';
+        $user->password = Hash::make('123456');
+
+        if ($user->save()) {
+        	return new UserResource($user);
+        } else {
+        	return false;
         }
 	}
 

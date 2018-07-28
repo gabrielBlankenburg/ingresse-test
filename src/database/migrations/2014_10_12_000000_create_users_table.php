@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('last_name');
+            $table->boolean('admin')->default(0);
             $table->string('rg', 14);
             $table->string('cpf', 11);
             $table->string('email')->unique();

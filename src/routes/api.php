@@ -21,3 +21,4 @@ Route::apiResource('users', 'Api\UsersController');
 
 Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
+Route::post('register-first-admin', 'Api\AuthController@generateAdmin');

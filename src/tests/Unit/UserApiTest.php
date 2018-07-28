@@ -17,6 +17,8 @@ class UserApiTest extends TestCase
 
     private $token;
 
+    private $email;
+
     /**
      * Chama os métodos na ordem certa
      *
@@ -25,11 +27,19 @@ class UserApiTest extends TestCase
     public function executeInOrder()
     {
         $this->unauthenticaded();
+        $this->generateAdmin();
+        $this->loginAsAdmin();
+        $this->create(true);
         $this->register();
         $this->create();
         $this->get();
-        $this->update();
-        $this->delete();
+        $this->update($this->email);
+        $this->delete($this->email);
+        $this->loginAsAdmin();
+        $this->create(true);
+        $this->update($this->email, true);
+        $this->delete($this->email, true);
+
     }
 
     /**
@@ -68,17 +78,18 @@ class UserApiTest extends TestCase
     */
     public function register()
     {
+        $email = 'jose@teste.com';
         $user = [
-            'name' => 'Admin',
-            'last_name' => ' - Blankenburg',
+            'name' => 'José',
+            'last_name' => 'Almeida',
             'rg' => '1312312',
             'cpf' => CpfValidation::generate(),
-            'email' => 'gabriel@teste.com',
+            'email' => $email,
             'birth_date' => '1998-10-10',
             'password' => '123456',
         ];
 
-        $response = $this->withHeaders($this->headers)->json('POST', '/api/register', $user);
+        $response = $this->withHeaders($this->headers)->json('POST', '/api/register', $user); 
 
         $response->assertStatus(200);
 
@@ -87,15 +98,57 @@ class UserApiTest extends TestCase
         $response->assertJson(['message' => 'User created successfully']);
 
         $this->token = $response->decodeResponseJson('accessToken');
+        $this->email = $email;
     }
 
     /**
-	 * Testando o método create
-	 * Assegure-se que o não há nenhum usuário cadastrado com esse e-mail, ou então troque ele, pois o e-mail deve ser único
+     * Gera um admin padrão
      *
      * @return void
     */
-    public function create()
+    public function generateAdmin()
+    {
+        $response = $this->withHeaders($this->headers)->json('POST', '/api/register-first-admin');
+
+        $response->assertStatus(200);
+
+        $response->assertJson(['message' => 'Default admin generated']);
+
+    }
+
+    /**
+     * Loga como o admin gerado pelo app
+     *
+     * @return void
+    */
+    public function loginAsAdmin()
+    {
+        $email = 'gabriel@admin.com';
+        $user = [
+            'email' => $email,
+            'password' => '123456',
+        ];
+
+        $response = $this->withHeaders($this->headers)->json('POST', '/api/login', $user);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure(['message', 'accessToken']);
+
+        $response->assertJson(['message' => 'Logged In']);
+
+        $this->token = $response->decodeResponseJson('accessToken');
+        $this->email = $email;
+    }
+
+    /**
+	 * Teste do método create, é possível utilizar um usuário admin ou não nesse teste
+	 * Assegure-se que o não há nenhum usuário cadastrado com esse e-mail, ou então troque ele, pois o e-mail deve ser único
+     *
+     * @param boolean $admin diz se o usuário atual é adminstrador ou não
+     * @return void
+    */
+    public function create($admin = false)
     {
 
     	$user = [
@@ -113,11 +166,15 @@ class UserApiTest extends TestCase
 
     	$response = $this->withHeaders($headers)->json('POST', '/api/users', $user);
         
-        $response->assertStatus(201);
+        if ($admin) {
+            $response->assertStatus(201);            
+        } else {
+            $response->assertStatus(403);
+        }
     }
 
     /**
-	 * Testando os métodos get e show
+	 * Teste dos métodos get e show
      *
      * @return void
     */
@@ -125,7 +182,7 @@ class UserApiTest extends TestCase
     {
         $headers = $this->headers;
         $headers['Authorization'] = 'Bearer '.$this->token;
-        
+
         $responseIndex = $this->withHeaders($headers)->json('GET', '/api/users');
 
         $responseIndex->assertStatus(200);
@@ -143,47 +200,97 @@ class UserApiTest extends TestCase
     }
 
 	/**
-	 * Testando o método update
+	 * Teste do método update, é possível testar com um usuário simples e um usuário administrador
      *
+     * @param string $email informa o email do usuário atual
+     * @param boolean $admin diz se o usuário atual é adminstrador ou não
      * @return void
     */
-    public function update()
+    public function update($email = null, $admin = false)
     {
 
     	$userUpdated = [
-            'name' => 'Gabriel',
-            'last_name' => 'Gonçalves Blankenburg',
+            'name' => 'User',
+            'last_name' => '- Admin',
             'rg' => '1312312',
             'cpf' => CpfValidation::generate(),
-            'email' => 'gabriel@teste.com',
+            'email' => 'gabriel@admin.com',
             'birth_date' => '1998-10-10',
             'password' => '123456',
         ];
 
-    	$user = \App\User::first();
+    	$user = \App\User::where('email', 'gabriel@admin.com')->first();
 
         $headers = $this->headers;
         $headers['Authorization'] = 'Bearer '.$this->token;
 
     	$response = $this->withHeaders($headers)->json('PUT', '/api/users/'.$user->id, $userUpdated);
 
-    	$response->assertStatus(201);
-    }  
+        if ($user->email == $email || $admin) {
+    	   $response->assertStatus(201);            
+        } else {
+            $response->assertStatus(403);
+        }
 
-    /**
-	 * Testando o método delete
-     *
-     * @return void
-    */
-    public function delete()
-    {
-    	$user = \App\User::first();
+        $userUpdated = [
+            'name' => 'José',
+            'last_name' => 'Almeida',
+            'rg' => '131231212',
+            'cpf' => CpfValidation::generate(),
+            'email' => 'jose@teste.com',
+            'birth_date' => '1998-04-17',
+            'password' => '123456',
+        ];
+
+        $user = \App\User::where('email', 'jose@teste.com')->first();
 
         $headers = $this->headers;
         $headers['Authorization'] = 'Bearer '.$this->token;
 
-    	$response = $this->withHeaders($headers)->json('DELETE', '/api/users/'.$user->id);
+        $response = $this->withHeaders($headers)->json('PUT', '/api/users/'.$user->id, $userUpdated);
 
-        $response->assertStatus(204);
+        if ($user->email == $email || $admin) {
+           $response->assertStatus(201);            
+        } else {
+            $response->assertStatus(403);
+        }
+    }  
+
+    /**
+	 * Teste do método delete é possível fazer utilizando um usuário simples ou adminstrador
+     *
+     * @param string $email informa o email do usuário
+     * @param boolean $admin diz se o usuário atual é adminstrador ou não
+     * @return void
+    */
+    public function delete($email = null, $admin = false)
+    {
+        $user = \App\User::where('email', 'gabriel2@teste.com')->first();
+
+        $headers = $this->headers;
+        $headers['Authorization'] = 'Bearer '.$this->token;
+
+        $response = $this->withHeaders($headers)->json('DELETE', '/api/users/'.$user->id, $userUpdated);
+
+        if ($user->email == $email|| $admin) {
+           $response->assertStatus(204);           
+        } else {
+            $response->assertStatus(403);
+        }
+
+        $user = \App\User::where('email', 'jose@teste.com')->first();
+
+        if (count($user) > 0) {
+            $headers = $this->headers;
+            $headers['Authorization'] = 'Bearer '.$this->token;
+
+            $response = $this->withHeaders($headers)->json('DELETE', '/api/users/'.$user->id, $userUpdated);
+
+            if ($user->email == $email || $admin) {
+               $response->assertStatus(204);           
+            } else {
+                $response->assertStatus(403);
+            }
+        }
     }  
 }

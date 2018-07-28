@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+
+     /**
+     * Utiliza o middleware de autorização de api (passport)
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -38,6 +44,10 @@ class UsersController extends Controller
      */
     public function store(UserRequest $request, UserRepository $repository)
     {
+        if (Gate::denies('create-user')) {
+            return response([], 403);
+        }
+
         $user = $repository->save($request);
         if ($user) {
             return response($user, 201);
@@ -69,6 +79,10 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, UserRepository $repository, $id)
     {
+        if (Gate::denies('update-user', $id)) {
+            return response([], 403);
+        }
+
         $user = $repository->save($request, $id);
 
         if ($user) {
@@ -87,6 +101,10 @@ class UsersController extends Controller
      */
     public function destroy(UserRepository $repository, $id)
     {
+        if (Gate::denies('delete-user', $id)) {
+            return response([], 403);
+        }
+
         if ($repository->delete($id)) {
             return response([], 204);            
         } else {
