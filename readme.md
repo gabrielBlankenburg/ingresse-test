@@ -119,4 +119,9 @@ As rotas são definidas em `src/routes/api.php`
 Os testes ficam em `src/tests/`, execute-os utilizando `docker exec -it ingresse-php-fpm vendor/bin/phpunit`.
 Após executar testes, é gerado o code coverage em `src/report/index.html`
 
-
+## Pode ser útil
+- [Docker](https://www.docker.com/)
+- [Laravel](https://laravel.com/)
+- [MySQL](https://www.mysql.com/)
+- [NGINX](https://www.nginx.com/)
+- [PHPMyAdmin](https://www.phpmyadmin.net/)
