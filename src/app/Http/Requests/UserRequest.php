@@ -8,7 +8,7 @@ use App\Rules\ValidCpf;
 class UserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina se o usuário tem permissão para fazer o request
      *
      * @return bool
      */
@@ -18,7 +18,7 @@ class UserRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Pega as regras de validação para o request
      *
      * @return array
      */

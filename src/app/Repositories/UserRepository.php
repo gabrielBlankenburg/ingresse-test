@@ -19,7 +19,7 @@ class UserRepository {
 	/**
 	 * Cria um novo usuário ou edita um existente
 	 *
-	 * @param \App\Http\Requests\UserRequest $request Request do tipo UserRequest
+	 * @param \App\Http\Requests\UserRequest $request
 	 * @param int id optional O id do usuário, se esse parâmetro for passado este método tentará editar o usuário que contenha esse id
 	 *
 	 * @return instância de \App\User em caso de sucesso e false em caso de erro
@@ -77,7 +77,7 @@ class UserRepository {
 	*/
 	public function generateAdmin()
 	{
-		$admin = User::where('email', 'gabriel@admin.com');
+		$admin = User::where('email', 'usuario@admin.com');
 
 		if ($admin->first()) {
 			return false;
@@ -95,6 +95,7 @@ class UserRepository {
         $user->password = Hash::make('123456');
 
         if ($user->save()) {
+        	$this->clearUsersCache();
         	return new UserResource($user);
         } else {
         	return false;

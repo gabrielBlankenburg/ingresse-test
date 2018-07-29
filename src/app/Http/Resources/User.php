@@ -15,16 +15,13 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
-
-        $birthDate = Carbon::parse($this->birth_date)->format('d/m/Y H:i:s');
-
         return [
             'id' => $this->id,
             'name' => $this->name.' '.$this->last_name,
             'email' => $this->email,
             'rg' => $this->rg,
             'cpf' => $this->cpf,
-            'birth_date' => $birthDate,
+            'birth_date' => $this->birth_date,
             'admin' => $this->admin,
         ];
     }
