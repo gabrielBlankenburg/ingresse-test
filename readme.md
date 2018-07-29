@@ -30,7 +30,7 @@ Qualquer requisição api feita, é necessário colocar os seguintes headers:
 ### Admin Genérico
 Você pode gerar um novo admin com as credenciais padrões fazendo uma requisição POST para [localhost:8000](http://localhost:8000/api/register-first-admin). Isso irá gerar um usuários com as credenciais: 
 
-- E-mail: gabriel@admin.com
+- E-mail: usuario@admin.com
 - Senha: 123456
 
 ### Novo Usuário simples

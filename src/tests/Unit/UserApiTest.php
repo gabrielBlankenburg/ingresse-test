@@ -53,7 +53,7 @@ class UserApiTest extends TestCase
     */
     public function generateAdmin()
     {
-        $user = \App\User::where('email', 'gabriel@admin.com')->first();
+        $user = \App\User::where('email', 'usuario@admin.com')->first();
 
         $response = $this->withHeaders($this->headers)->json('POST', '/api/register-first-admin');
 
@@ -104,7 +104,7 @@ class UserApiTest extends TestCase
     public function loginAsAdminAndCRUD()
     {
         $user = [
-            'email' => 'gabriel@admin.com',
+            'email' => 'usuario@admin.com',
             'password' => '123456',
         ];
 
@@ -118,7 +118,7 @@ class UserApiTest extends TestCase
 
         $token = $response->decodeResponseJson('accessToken');
 
-        $email = 'gabriel2@teste.com';
+        $email = 'gabriel@teste.com';
 
         // Create
         $user = [
@@ -226,7 +226,7 @@ class UserApiTest extends TestCase
             'last_name' => 'Teste',
             'rg' => '1312312',
             'cpf' => CpfValidation::generate(),
-            'email' => 'teste.teste@teste.com',
+            'email' => 'rodrigo@teste.com',
             'birth_date' => '1998-10-10',
             'password' => '123456',
         ]; 
@@ -239,7 +239,7 @@ class UserApiTest extends TestCase
             'last_name' => 'Blankenburg',
             'rg' => '1312312',
             'cpf' => CpfValidation::generate(),
-            'email' => 'gabriel2@teste.com',
+            'email' => 'gabriel@teste.com',
             'birth_date' => '1998-10-10',
             'password' => '123456',
         ];

@@ -90,7 +90,7 @@ class UserRepository {
         $user->admin = 1;
         $user->rg = '13131232';
         $user->cpf = CpfValidation::generate();
-        $user->email = 'gabriel@admin.com';
+        $user->email = 'usuario@admin.com';
         $user->birth_date = '1998-04-17';
         $user->password = Hash::make('123456');
 
