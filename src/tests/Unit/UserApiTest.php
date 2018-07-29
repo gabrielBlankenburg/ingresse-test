@@ -53,11 +53,18 @@ class UserApiTest extends TestCase
     */
     public function generateAdmin()
     {
+        $user = \App\User::where('email', 'gabriel@admin.com')->first();
+
         $response = $this->withHeaders($this->headers)->json('POST', '/api/register-first-admin');
 
-        $response->assertStatus(200);
+        if ($user) {
+            $response->assertStatus(400)   
+        } else {
+            $response->assertStatus(201);
+            $response->assertJson(['message' => 'Default admin generated']);            
+        }
 
-        $response->assertJson(['message' => 'Default admin generated']);
+
 
     }
 

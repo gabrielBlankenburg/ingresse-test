@@ -8,6 +8,7 @@ use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use App\Helpers\CpfValidation;
+use Illuminate\Support\Facades\Auth;
 
 class UserRepository {
 
@@ -40,6 +41,9 @@ class UserRepository {
 			$user = User::findOrFail($id);
 		}
 
+		if (Auth::user()->admin) {
+			$user->admin = $request->input('admin');
+		}
 
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');

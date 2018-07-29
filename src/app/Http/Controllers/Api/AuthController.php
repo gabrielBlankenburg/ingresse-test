@@ -56,7 +56,7 @@ class AuthController extends Controller
         $user = $repository->generateAdmin();
 
         if ($user) {
-            return response(['message' => 'Default admin generated'], 200);
+            return response(['message' => 'Default admin generated'], 201);
         } else {
             return response(['error' => 'Can\'t add admin'], 400);
         }

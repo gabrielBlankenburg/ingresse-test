@@ -31,6 +31,7 @@ class UserRequest extends FormRequest
             'rg' => 'string|max:14|nullable',
             'email' => 'email|required',
             'birth_date' => 'date|required',
+            'admin' => 'boolean|nullable',
         ];
 
         if ($this->method() != 'PUT') {

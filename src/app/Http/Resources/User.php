@@ -25,6 +25,7 @@ class User extends JsonResource
             'rg' => $this->rg,
             'cpf' => $this->cpf,
             'birth_date' => $birthDate,
+            'admin' => $this->admin,
         ];
     }
 }
