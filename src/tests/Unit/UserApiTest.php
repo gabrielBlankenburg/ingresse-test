@@ -58,7 +58,7 @@ class UserApiTest extends TestCase
         $response = $this->withHeaders($this->headers)->json('POST', '/api/register-first-admin');
 
         if ($user) {
-            $response->assertStatus(400)   
+            $response->assertStatus(400); 
         } else {
             $response->assertStatus(201);
             $response->assertJson(['message' => 'Default admin generated']);            

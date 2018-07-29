@@ -41,8 +41,8 @@ class UserRepository {
 			$user = User::findOrFail($id);
 		}
 
-		if (Auth::user()->admin) {
-			$user->admin = $request->input('admin');
+		if (Auth::user() && Auth::user()->admin) {
+			$user->admin = $request->input('admin') ? 1 : 0;
 		}
 
         $user->name = $request->input('name');
